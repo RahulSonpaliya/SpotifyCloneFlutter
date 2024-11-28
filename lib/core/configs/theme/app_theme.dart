@@ -19,6 +19,16 @@ class AppTheme {
     brightness: Brightness.light,
     fontFamily: 'Satoshi',
     elevatedButtonTheme: _elevatedButtonTheme,
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.black,
+        textStyle: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    ),
   );
 
   static final darkTheme = ThemeData(
@@ -27,5 +37,15 @@ class AppTheme {
     brightness: Brightness.dark,
     fontFamily: 'Satoshi',
     elevatedButtonTheme: _elevatedButtonTheme,
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white,
+        textStyle: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    ),
   );
 }
