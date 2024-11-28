@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:spotify_clone/presentation/auth/pages/login_or_signup.dart';
 import 'package:spotify_clone/presentation/choose_mode/bloc/theme_cubit.dart';
 
 import '../../../common/widgets/button/basic_app_button.dart';
@@ -78,7 +79,14 @@ class ChooseModePage extends StatelessWidget {
                   height: 20,
                 ),
                 BasicAppButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const LoginOrSignUpPage(),
+                      ),
+                    );
+                  },
                   title: 'Continue',
                 ),
               ],
