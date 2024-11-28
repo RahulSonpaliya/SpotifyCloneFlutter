@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:spotify_clone/presentation/choose_mode/bloc/theme_cubit.dart';
 
 import '../../../common/widgets/button/basic_app_button.dart';
 import '../../../core/configs/assets/app_images.dart';
@@ -50,19 +52,25 @@ class ChooseModePage extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     ModeOptionCard(
                       modeTitle: 'Dark Mode',
                       modeIconPath: AppVectors.moon,
+                      onTap: () => context
+                          .read<ThemeCubit>()
+                          .updateTheme(ThemeMode.dark),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 20,
                     ),
                     ModeOptionCard(
                       modeTitle: 'Light Mode',
                       modeIconPath: AppVectors.sun,
+                      onTap: () => context
+                          .read<ThemeCubit>()
+                          .updateTheme(ThemeMode.light),
                     ),
                   ],
                 ),
