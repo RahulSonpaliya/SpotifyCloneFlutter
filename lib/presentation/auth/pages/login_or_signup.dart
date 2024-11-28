@@ -5,6 +5,7 @@ import 'package:spotify_clone/common/widgets/app_bar/basic_app_bar.dart';
 import 'package:spotify_clone/common/widgets/button/basic_app_button.dart';
 import 'package:spotify_clone/core/configs/assets/app_images.dart';
 import 'package:spotify_clone/core/configs/assets/app_vectors.dart';
+import 'package:spotify_clone/presentation/auth/pages/signup.dart';
 
 import '../../../core/configs/theme/app_colors.dart';
 
@@ -69,7 +70,14 @@ class LoginOrSignUpPage extends StatelessWidget {
                     children: [
                       Expanded(
                         child: BasicAppButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => SignUpPage(),
+                              ),
+                            );
+                          },
                           title: 'Register',
                         ),
                       ),
