@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:spotify_clone/common/widgets/app_bar/basic_app_bar.dart';
 import 'package:spotify_clone/common/widgets/button/basic_app_button.dart';
@@ -7,6 +5,7 @@ import 'package:spotify_clone/data/models/auth/signin_user_req.dart';
 import 'package:spotify_clone/domain/usecases/auth/signin.dart';
 
 import '../../../service_locator.dart';
+import '../../home/pages/home.dart';
 import 'signup.dart';
 
 class LoginPage extends StatelessWidget {
@@ -102,7 +101,10 @@ class LoginPage extends StatelessWidget {
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   },
                   (signInResponse) {
-                    log('signInResponse--------> ${signInResponse.message}');
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (_) => const HomePage()),
+                        (route) => false);
                   },
                 );
               },
