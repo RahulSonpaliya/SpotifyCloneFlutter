@@ -1,14 +1,19 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:spotify_clone/common/widgets/app_bar/basic_app_bar.dart';
 import 'package:spotify_clone/common/widgets/button/basic_app_button.dart';
+import 'package:spotify_clone/data/models/auth/signin_user_req.dart';
+import 'package:spotify_clone/domain/usecases/auth/signin.dart';
 
+import '../../../service_locator.dart';
 import 'signup.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
 
-  final _emailCtrl = TextEditingController();
-  final _passwordCtrl = TextEditingController();
+  final _emailCtrl = TextEditingController(text: 'testuser3@yopmail.com');
+  final _passwordCtrl = TextEditingController(text: 'Temp@123');
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +87,25 @@ class LoginPage extends StatelessWidget {
               height: 20,
             ),
             BasicAppButton(
-              onPressed: () {},
+              onPressed: () async {
+                var result = await sl<SignInUseCase>().call(
+                    param: SignInUserReq(
+                  email: _emailCtrl.text,
+                  password: _passwordCtrl.text,
+                ));
+                result.fold(
+                  (failure) {
+                    var snackBar = SnackBar(
+                      content: Text(failure.message),
+                      behavior: SnackBarBehavior.floating,
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  },
+                  (signInResponse) {
+                    log('signInResponse--------> ${signInResponse.message}');
+                  },
+                );
+              },
               title: 'Sign In',
             )
           ],
