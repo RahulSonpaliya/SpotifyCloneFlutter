@@ -4,4 +4,6 @@ import 'package:spotify_clone/domain/entities/song/song.dart';
 
 abstract class SongRepository {
   Future<Either<Failure, List<SongEntity>>> getNewsSongs();
+
+  Future<Either<Failure, List<SongEntity>>> getPlaylist();
 }

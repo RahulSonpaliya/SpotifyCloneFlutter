@@ -11,4 +11,9 @@ class SongRepositoryImpl extends SongRepository {
   Future<Either<Failure, List<SongEntity>>> getNewsSongs() async {
     return sl<SongService>().getNewsSongs();
   }
+
+  @override
+  Future<Either<Failure, List<SongEntity>>> getPlaylist() async {
+    return sl<SongService>().getPlaylist();
+  }
 }
