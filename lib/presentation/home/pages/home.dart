@@ -3,6 +3,7 @@ import 'package:spotify_clone/common/widgets/app_bar/basic_app_bar.dart';
 
 import '../widgets/home_artist_card.dart';
 import '../widgets/home_tabs.dart';
+import '../widgets/news_songs.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -40,7 +41,7 @@ class _HomePageState extends State<HomePage>
               child: TabBarView(
                 controller: _tabController,
                 children: const [
-                  SizedBox.shrink(),
+                  NewsSongs(),
                   SizedBox.shrink(),
                   SizedBox.shrink(),
                   SizedBox.shrink(),
