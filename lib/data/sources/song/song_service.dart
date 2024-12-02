@@ -7,6 +7,8 @@ import '../../models/failure.dart';
 
 abstract class SongService {
   Future<Either<Failure, List<SongEntity>>> getNewsSongs();
+
+  Future<Either<Failure, List<SongEntity>>> getPlaylist();
 }
 
 class SongFirebaseService extends SongService {
@@ -15,6 +17,22 @@ class SongFirebaseService extends SongService {
     try {
       var data =
           await FirebaseFirestore.instance.collection('Songs').limit(3).get();
+      List<SongEntity> songs = [];
+      for (var e in data.docs) {
+        var songModel = SongModel.fromJson(e.data());
+        songModel.songId = e.reference.id;
+        songs.add(songModel.toEntity());
+      }
+      return Right(songs);
+    } catch (e) {
+      return Left(Failure(0, "Some error occurred, please try again."));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<SongEntity>>> getPlaylist() async {
+    try {
+      var data = await FirebaseFirestore.instance.collection('Songs').get();
       List<SongEntity> songs = [];
       for (var e in data.docs) {
         var songModel = SongModel.fromJson(e.data());
