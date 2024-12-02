@@ -4,6 +4,7 @@ import 'package:spotify_clone/common/widgets/app_bar/basic_app_bar.dart';
 import '../widgets/home_artist_card.dart';
 import '../widgets/home_tabs.dart';
 import '../widgets/news_songs.dart';
+import '../widgets/playlist.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -47,7 +48,9 @@ class _HomePageState extends State<HomePage>
                   SizedBox.shrink(),
                 ],
               ),
-            )
+            ),
+            const SizedBox(height: 20),
+            const Playlist(),
           ],
         ),
       ),
