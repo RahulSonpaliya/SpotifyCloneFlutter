@@ -5,12 +5,14 @@ class SongModel {
   String? artist;
   num? duration;
   String? songId;
+  bool? isFavorite;
 
   SongModel({
     required this.title,
     required this.artist,
     required this.duration,
     required this.songId,
+    required this.isFavorite,
   });
 
   SongModel.fromJson(Map<String, dynamic> data) {
@@ -18,6 +20,7 @@ class SongModel {
     artist = data['artist'];
     duration = data['duration'];
     songId = data['songId'];
+    isFavorite = data['isFavorite'];
   }
 
   SongEntity toEntity() {
@@ -26,6 +29,7 @@ class SongModel {
       artist: artist!,
       duration: duration!,
       songId: songId!,
+      isFavorite: isFavorite!,
     );
   }
 }
