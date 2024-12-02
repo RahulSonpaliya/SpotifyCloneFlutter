@@ -13,6 +13,8 @@ abstract class SongService {
   Future<Either<Failure, List<SongEntity>>> getPlaylist();
 
   Future<Either<Failure, BaseResponse>> addOrRemoveFavSong(String songId);
+
+  Future<Either<Failure, BaseResponse>> isFavSong(String songId);
 }
 
 class SongFirebaseService extends SongService {
@@ -76,6 +78,23 @@ class SongFirebaseService extends SongService {
         responseMessage = 'Favorite added successfully';
       }
       return Right(BaseResponse(message: responseMessage));
+    } catch (e) {
+      return Left(Failure(0, "Some error occurred, please try again."));
+    }
+  }
+
+  @override
+  Future<Either<Failure, BaseResponse>> isFavSong(String songId) async {
+    try {
+      final firebaseAuth = FirebaseAuth.instance;
+      final firebaseFirestore = FirebaseFirestore.instance;
+      final favoriteSongs = await firebaseFirestore
+          .collection('Users')
+          .doc(firebaseAuth.currentUser?.uid)
+          .collection('Favorites')
+          .where('songId', isEqualTo: songId)
+          .get();
+      return Right(BaseResponse(success: favoriteSongs.docs.isNotEmpty));
     } catch (e) {
       return Left(Failure(0, "Some error occurred, please try again."));
     }
