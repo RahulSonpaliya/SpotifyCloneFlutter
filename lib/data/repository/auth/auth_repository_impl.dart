@@ -27,4 +27,9 @@ class AuthRepositoryImpl extends AuthRepository {
   Future<Either<Failure, UserEntity>> getUser() async {
     return await sl<AuthService>().getUser();
   }
+
+  @override
+  Future<bool> isUserLoggedIn() async {
+    return await sl<AuthService>().isUserLoggedIn();
+  }
 }
