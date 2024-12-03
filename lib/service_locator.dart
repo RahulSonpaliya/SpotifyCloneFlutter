@@ -1,3 +1,4 @@
+import 'package:event_bus/event_bus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:spotify_clone/data/repository/auth/auth_repository_impl.dart';
 import 'package:spotify_clone/data/repository/song/song_repository_impl.dart';
@@ -32,4 +33,5 @@ Future<void> initializeDependencies() async {
   sl.registerSingleton<AddOrRemoveFavoriteSongUseCase>(
       AddOrRemoveFavoriteSongUseCase());
   sl.registerSingleton<IsFavoriteSongUseCase>(IsFavoriteSongUseCase());
+  sl.registerSingleton<EventBus>(EventBus());
 }

@@ -1,9 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
+import 'package:spotify_clone/common/widgets/button/favorite_button/favorite_button.dart';
 
-import '../../../core/configs/constants/app_urls.dart';
-import '../../../core/configs/theme/app_colors.dart';
+import '../../../common/widgets/button/favorite_button/favorite_button_event.dart';
 import '../../../domain/entities/song/song.dart';
+import '../../../service_locator.dart';
 
 class SongDetail extends StatelessWidget {
   final SongEntity song;
@@ -37,14 +38,12 @@ class SongDetail extends StatelessWidget {
             ),
           ],
         ),
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(
-            Icons.favorite_border_outlined,
-            size: 32,
-            color: AppColors.darkGrey,
+        FavoriteButton(
+          song: song,
+          onClick: () => sl<EventBus>().fire(
+            FavoriteButtonUpdatedEvent(),
           ),
-        )
+        ),
       ],
     );
   }

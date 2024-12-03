@@ -43,6 +43,7 @@ dependencies:
   cloud_firestore:
   cached_network_image:
   just_audio:
+  event_bus:
 
 dev_dependencies:
   flutter_test:
