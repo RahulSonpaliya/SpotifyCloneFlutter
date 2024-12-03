@@ -3,7 +3,7 @@ class SongEntity {
   final String artist;
   final num duration;
   final String songId;
-  final bool isFavorite;
+  bool isFavorite;
 
   SongEntity({
     required this.title,

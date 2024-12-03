@@ -28,6 +28,11 @@ class SongFirebaseService extends SongService {
       List<SongEntity> songs = [];
       for (var e in data.docs) {
         var songModel = SongModel.fromJson(e.data());
+        final isFavResult = await isFavSong(e.reference.id);
+        isFavResult.fold(
+          (l) => {},
+          (response) => songModel.isFavorite = response.success,
+        );
         songModel.songId = e.reference.id;
         songs.add(songModel.toEntity());
       }
@@ -44,6 +49,11 @@ class SongFirebaseService extends SongService {
       List<SongEntity> songs = [];
       for (var e in data.docs) {
         var songModel = SongModel.fromJson(e.data());
+        final isFavResult = await isFavSong(e.reference.id);
+        isFavResult.fold(
+          (l) => {},
+          (response) => songModel.isFavorite = response.success,
+        );
         songModel.songId = e.reference.id;
         songs.add(songModel.toEntity());
       }
