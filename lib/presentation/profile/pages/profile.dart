@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:spotify_clone/common/helpers/is_dark_mode.dart';
 import 'package:spotify_clone/common/widgets/app_bar/basic_app_bar.dart';
+import 'package:spotify_clone/presentation/profile/widgets/favorite_songs.dart';
 
 import '../widgets/profile_info.dart';
 
@@ -19,6 +20,8 @@ class ProfilePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ProfileInfo(),
+          SizedBox(height: 30),
+          FavoriteSongs(),
         ],
       ),
     );
