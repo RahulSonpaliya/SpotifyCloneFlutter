@@ -3,6 +3,7 @@ import 'package:spotify_clone/common/helpers/is_dark_mode.dart';
 import 'package:spotify_clone/domain/entities/song/song.dart';
 import 'package:spotify_clone/presentation/song_player/pages/song_player.dart';
 
+import '../../../common/widgets/button/favorite_button/favorite_button.dart';
 import '../../../core/configs/theme/app_colors.dart';
 
 class PLSongItem extends StatelessWidget {
@@ -65,6 +66,13 @@ class PLSongItem extends StatelessWidget {
                   ),
                 ],
               )
+            ],
+          ),
+          Row(
+            children: [
+              Text(song.duration.toString().replaceAll('.', ':')),
+              const SizedBox(width: 15),
+              FavoriteButton(song: song),
             ],
           )
         ],
