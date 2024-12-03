@@ -19,6 +19,8 @@ abstract class AuthService {
       CreateUserReq createUserReq);
 
   Future<Either<Failure, UserEntity>> getUser();
+
+  Future<bool> isUserLoggedIn();
 }
 
 class AuthFirebaseService extends AuthService {
@@ -96,5 +98,10 @@ class AuthFirebaseService extends AuthService {
     } catch (e) {
       return Left(Failure(0, 'An error occurred'));
     }
+  }
+
+  @override
+  Future<bool> isUserLoggedIn() async {
+    return FirebaseAuth.instance.currentUser != null;
   }
 }
