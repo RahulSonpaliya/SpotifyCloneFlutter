@@ -1,7 +1,10 @@
+import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:spotify_clone/common/widgets/app_bar/basic_app_bar.dart';
+import 'package:spotify_clone/presentation/profile/bloc/home_pull_to_refresh_event.dart';
 import 'package:spotify_clone/presentation/profile/pages/profile.dart';
 
+import '../../../service_locator.dart';
 import '../widgets/home_artist_card.dart';
 import '../widgets/home_tabs.dart';
 import '../widgets/news_songs.dart';
@@ -41,29 +44,32 @@ class _HomePageState extends State<HomePage>
           )
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const HomeArtistCard(),
-            HomeTabs(
-              controller: _tabController,
-            ),
-            SizedBox(
-              height: 220,
-              child: TabBarView(
+      body: RefreshIndicator(
+        onRefresh: () async => sl<EventBus>().fire(HomePullToRefreshEvent()),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const HomeArtistCard(),
+              HomeTabs(
                 controller: _tabController,
-                children: const [
-                  NewsSongs(),
-                  SizedBox.shrink(),
-                  SizedBox.shrink(),
-                  SizedBox.shrink(),
-                ],
               ),
-            ),
-            const SizedBox(height: 20),
-            const Playlist(),
-          ],
+              SizedBox(
+                height: 220,
+                child: TabBarView(
+                  controller: _tabController,
+                  children: const [
+                    NewsSongs(),
+                    SizedBox.shrink(),
+                    SizedBox.shrink(),
+                    SizedBox.shrink(),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
+              const Playlist(),
+            ],
+          ),
         ),
       ),
     );
