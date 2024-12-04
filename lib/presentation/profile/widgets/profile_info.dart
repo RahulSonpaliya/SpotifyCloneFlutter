@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:spotify_clone/common/helpers/image_picker_utils.dart';
 import 'package:spotify_clone/common/helpers/is_dark_mode.dart';
 import 'package:spotify_clone/presentation/profile/bloc/profile_info_cubit.dart';
 
@@ -32,12 +33,67 @@ class ProfileInfo extends StatelessWidget {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(30),
-                  child: CachedNetworkImage(
-                    height: 90,
-                    width: 90,
-                    imageUrl: state.userEntity.imageUrl!,
+                SizedBox(
+                  height: 140,
+                  width: 140,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(100),
+                        child:
+                            context.read<ProfileInfoCubit>().updatedUserImage !=
+                                    null
+                                ? FutureBuilder(
+                                    future: context
+                                        .read<ProfileInfoCubit>()
+                                        .updatedUserImage!
+                                        .readAsBytes(),
+                                    builder: (_, snapshot) {
+                                      if (snapshot.hasData) {
+                                        return Image.memory(
+                                          fit: BoxFit.cover,
+                                          height: 125,
+                                          width: 125,
+                                          snapshot.data!,
+                                        );
+                                      }
+                                      return const SizedBox.shrink();
+                                    },
+                                  )
+                                : CachedNetworkImage(
+                                    height: 125,
+                                    width: 125,
+                                    imageUrl: state.userEntity.imageUrl!,
+                                  ),
+                      ),
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: IconButton(
+                          onPressed: () async {
+                            final pickedImage = await ImagePickerUtil
+                                .showCameraOrGalleryChooser(context);
+                            if (pickedImage != null) {
+                              context
+                                  .read<ProfileInfoCubit>()
+                                  .userImagePicked(pickedImage);
+                            }
+                          },
+                          icon: Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: Colors.grey[200],
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(
+                              Icons.edit,
+                              size: 15,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
                   ),
                 ),
                 const SizedBox(height: 15),

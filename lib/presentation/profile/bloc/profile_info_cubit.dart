@@ -1,4 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:spotify_clone/domain/entities/auth/user.dart';
 import 'package:spotify_clone/domain/usecases/auth/get_user.dart';
 import 'package:spotify_clone/presentation/profile/bloc/profile_info_state.dart';
 
@@ -11,7 +13,21 @@ class ProfileInfoCubit extends Cubit<ProfileInfoState> {
     var result = await sl<GetUserUseCase>().call();
     result.fold(
       (failure) => emit(ProfileInfoFailure()),
-      (userEntity) => emit(ProfileInfoLoaded(userEntity: userEntity)),
+      (userEntity) {
+        this.userEntity = userEntity;
+        emit(ProfileInfoLoaded(userEntity: userEntity));
+      },
     );
+  }
+
+  late UserEntity userEntity;
+  XFile? updatedUserImage;
+
+  void userImagePicked(XFile updatedUserImage) {
+    this.updatedUserImage = updatedUserImage;
+    emit(ProfileInfoLoaded(
+      userEntity: userEntity,
+      updatedUserImage: updatedUserImage,
+    ));
   }
 }
