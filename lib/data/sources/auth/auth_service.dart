@@ -21,6 +21,8 @@ abstract class AuthService {
   Future<Either<Failure, UserEntity>> getUser();
 
   Future<bool> isUserLoggedIn();
+
+  Future<void> signOut();
 }
 
 class AuthFirebaseService extends AuthService {
@@ -103,5 +105,10 @@ class AuthFirebaseService extends AuthService {
   @override
   Future<bool> isUserLoggedIn() async {
     return FirebaseAuth.instance.currentUser != null;
+  }
+
+  @override
+  Future<void> signOut() async {
+    await FirebaseAuth.instance.signOut();
   }
 }

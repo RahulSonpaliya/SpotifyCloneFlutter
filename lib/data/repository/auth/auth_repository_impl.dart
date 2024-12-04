@@ -32,4 +32,9 @@ class AuthRepositoryImpl extends AuthRepository {
   Future<bool> isUserLoggedIn() async {
     return await sl<AuthService>().isUserLoggedIn();
   }
+
+  @override
+  Future<void> signOut() async {
+    await sl<AuthService>().signOut();
+  }
 }

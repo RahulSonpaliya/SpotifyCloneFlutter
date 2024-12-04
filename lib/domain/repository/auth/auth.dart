@@ -17,4 +17,6 @@ abstract class AuthRepository {
   Future<Either<Failure, UserEntity>> getUser();
 
   Future<bool> isUserLoggedIn();
+
+  Future<void> signOut();
 }
