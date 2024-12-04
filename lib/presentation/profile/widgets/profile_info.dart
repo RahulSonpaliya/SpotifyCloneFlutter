@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:spotify_clone/common/helpers/image_picker_utils.dart';
 import 'package:spotify_clone/common/helpers/is_dark_mode.dart';
+import 'package:spotify_clone/core/configs/assets/app_images.dart';
 import 'package:spotify_clone/presentation/profile/bloc/profile_info_cubit.dart';
 
 import '../bloc/profile_info_state.dart';
@@ -64,6 +65,9 @@ class ProfileInfo extends StatelessWidget {
                                 : CachedNetworkImage(
                                     height: 125,
                                     width: 125,
+                                    fit: BoxFit.cover,
+                                    errorWidget: (context, url, error) =>
+                                        Image.asset(AppImages.defaultUserImage),
                                     imageUrl: state.userEntity.imageUrl!,
                                   ),
                       ),
