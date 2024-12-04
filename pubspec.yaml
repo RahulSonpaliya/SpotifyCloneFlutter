@@ -47,7 +47,8 @@ dependencies:
   image_picker:
   flutter_image_compress:
   firebase_storage:
-  loader_overlay: 
+  loader_overlay:
+  email_validator:
 
 dev_dependencies:
   flutter_test:

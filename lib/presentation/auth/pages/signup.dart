@@ -1,3 +1,4 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:spotify_clone/common/widgets/app_bar/basic_app_bar.dart';
@@ -15,6 +16,7 @@ class SignUpPage extends StatelessWidget {
   final _fullNameCtrl = TextEditingController();
   final _emailCtrl = TextEditingController();
   final _passwordCtrl = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -69,29 +71,59 @@ class SignUpPage extends StatelessWidget {
               const SizedBox(
                 height: 50,
               ),
-              TextField(
-                controller: _fullNameCtrl,
-                decoration: const InputDecoration(
-                  hintText: 'Full Name',
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              TextField(
-                controller: _emailCtrl,
-                decoration: const InputDecoration(
-                  hintText: 'Enter Email',
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              TextField(
-                controller: _passwordCtrl,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  hintText: 'Password',
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: _fullNameCtrl,
+                      keyboardType: TextInputType.name,
+                      decoration: const InputDecoration(
+                        hintText: 'Full Name',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter full name';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    TextFormField(
+                      controller: _emailCtrl,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: const InputDecoration(
+                        hintText: 'Enter Email',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter email';
+                        }
+                        if (!EmailValidator.validate(value)) {
+                          return 'Invalid email';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    TextFormField(
+                      controller: _passwordCtrl,
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                        hintText: 'Password',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter password';
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(
@@ -99,29 +131,31 @@ class SignUpPage extends StatelessWidget {
               ),
               BasicAppButton(
                 onPressed: () async {
-                  context.loaderOverlay.show();
-                  var result = await sl<SignUpUseCase>().call(
-                      param: CreateUserReq(
-                    fullName: _fullNameCtrl.text,
-                    email: _emailCtrl.text,
-                    password: _passwordCtrl.text,
-                  ));
-                  context.loaderOverlay.hide();
-                  result.fold(
-                    (failure) {
-                      var snackBar = SnackBar(
-                        content: Text(failure.message),
-                        behavior: SnackBarBehavior.floating,
-                      );
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    },
-                    (signUpResponse) {
-                      Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(builder: (_) => const HomePage()),
-                          (route) => false);
-                    },
-                  );
+                  if (_formKey.currentState?.validate() ?? false) {
+                    context.loaderOverlay.show();
+                    var result = await sl<SignUpUseCase>().call(
+                        param: CreateUserReq(
+                      fullName: _fullNameCtrl.text,
+                      email: _emailCtrl.text,
+                      password: _passwordCtrl.text,
+                    ));
+                    context.loaderOverlay.hide();
+                    result.fold(
+                      (failure) {
+                        var snackBar = SnackBar(
+                          content: Text(failure.message),
+                          behavior: SnackBarBehavior.floating,
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      },
+                      (signUpResponse) {
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(builder: (_) => const HomePage()),
+                            (route) => false);
+                      },
+                    );
+                  }
                 },
                 title: 'Create Account',
               )
