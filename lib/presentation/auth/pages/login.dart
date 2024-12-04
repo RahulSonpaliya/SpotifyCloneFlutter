@@ -14,6 +14,7 @@ class LoginPage extends StatelessWidget {
 
   final _emailCtrl = TextEditingController();
   final _passwordCtrl = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -68,20 +69,40 @@ class LoginPage extends StatelessWidget {
               const SizedBox(
                 height: 50,
               ),
-              TextField(
-                controller: _emailCtrl,
-                decoration: const InputDecoration(
-                  hintText: 'Enter Email',
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              TextField(
-                controller: _passwordCtrl,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  hintText: 'Password',
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: _emailCtrl,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: const InputDecoration(
+                        hintText: 'Enter Email',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter email';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    TextFormField(
+                      controller: _passwordCtrl,
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                        hintText: 'Password',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter password';
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(
@@ -89,28 +110,30 @@ class LoginPage extends StatelessWidget {
               ),
               BasicAppButton(
                 onPressed: () async {
-                  context.loaderOverlay.show();
-                  var result = await sl<SignInUseCase>().call(
-                      param: SignInUserReq(
-                    email: _emailCtrl.text,
-                    password: _passwordCtrl.text,
-                  ));
-                  context.loaderOverlay.hide();
-                  result.fold(
-                    (failure) {
-                      var snackBar = SnackBar(
-                        content: Text(failure.message),
-                        behavior: SnackBarBehavior.floating,
-                      );
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    },
-                    (signInResponse) {
-                      Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(builder: (_) => const HomePage()),
-                          (route) => false);
-                    },
-                  );
+                  if (_formKey.currentState?.validate() ?? false) {
+                    context.loaderOverlay.show();
+                    var result = await sl<SignInUseCase>().call(
+                        param: SignInUserReq(
+                      email: _emailCtrl.text,
+                      password: _passwordCtrl.text,
+                    ));
+                    context.loaderOverlay.hide();
+                    result.fold(
+                      (failure) {
+                        var snackBar = SnackBar(
+                          content: Text(failure.message),
+                          behavior: SnackBarBehavior.floating,
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      },
+                      (signInResponse) {
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(builder: (_) => const HomePage()),
+                            (route) => false);
+                      },
+                    );
+                  }
                 },
                 title: 'Sign In',
               )
