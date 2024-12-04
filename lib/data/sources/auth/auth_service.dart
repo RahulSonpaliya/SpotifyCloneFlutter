@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:spotify_clone/core/configs/constants/app_urls.dart';
 import 'package:spotify_clone/data/models/auth/create_user_req.dart';
+import 'package:spotify_clone/data/models/base_response.dart';
 
 import '../../../domain/entities/auth/user.dart';
 import '../../models/auth/create_user_response.dart';
@@ -23,6 +27,8 @@ abstract class AuthService {
   Future<bool> isUserLoggedIn();
 
   Future<void> signOut();
+
+  Future<Either<Failure, BaseResponse>> uploadProfileImage(String filePath);
 }
 
 class AuthFirebaseService extends AuthService {
@@ -95,7 +101,7 @@ class AuthFirebaseService extends AuthService {
           .get();
       final userModel = UserModel.fromJson(user.data()!);
       userModel.imageUrl =
-          firebaseAuth.currentUser?.photoURL ?? AppUrls.defaultUserImage;
+          '${AppUrls.profileImagesFireStorage}${firebaseAuth.currentUser?.uid}?${AppUrls.mediaAlt}';
       return Right(userModel.toEntity());
     } catch (e) {
       return Left(Failure(0, 'An error occurred'));
@@ -110,5 +116,21 @@ class AuthFirebaseService extends AuthService {
   @override
   Future<void> signOut() async {
     await FirebaseAuth.instance.signOut();
+  }
+
+  @override
+  Future<Either<Failure, BaseResponse>> uploadProfileImage(
+      String filePath) async {
+    try {
+      final file = File(filePath);
+      await FirebaseStorage.instance
+          .ref('/profile_images')
+          .child(FirebaseAuth.instance.currentUser!.uid)
+          .putFile(file);
+      return Right(
+          BaseResponse(message: 'Profile picture uploaded successful'));
+    } catch (e) {
+      return Left(Failure(0, 'An error occurred'));
+    }
   }
 }

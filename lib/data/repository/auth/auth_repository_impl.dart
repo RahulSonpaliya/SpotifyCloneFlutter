@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:spotify_clone/data/models/auth/create_user_req.dart';
 import 'package:spotify_clone/data/models/auth/create_user_response.dart';
 import 'package:spotify_clone/data/models/auth/signin_user_req.dart';
+import 'package:spotify_clone/data/models/base_response.dart';
 import 'package:spotify_clone/data/sources/auth/auth_service.dart';
 import 'package:spotify_clone/domain/entities/auth/user.dart';
 import 'package:spotify_clone/domain/repository/auth/auth.dart';
@@ -36,5 +37,11 @@ class AuthRepositoryImpl extends AuthRepository {
   @override
   Future<void> signOut() async {
     await sl<AuthService>().signOut();
+  }
+
+  @override
+  Future<Either<Failure, BaseResponse>> uploadProfileImage(
+      String filePath) async {
+    return await sl<AuthService>().uploadProfileImage(filePath);
   }
 }

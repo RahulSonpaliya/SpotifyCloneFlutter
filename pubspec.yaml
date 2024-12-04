@@ -46,6 +46,7 @@ dependencies:
   event_bus:
   image_picker:
   flutter_image_compress:
+  firebase_storage:
 
 dev_dependencies:
   flutter_test:

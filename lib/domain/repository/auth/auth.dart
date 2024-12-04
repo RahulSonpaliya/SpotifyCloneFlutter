@@ -6,6 +6,7 @@ import 'package:spotify_clone/domain/entities/auth/user.dart';
 
 import '../../../data/models/auth/create_user_response.dart';
 import '../../../data/models/auth/signin_user_response.dart';
+import '../../../data/models/base_response.dart';
 
 abstract class AuthRepository {
   Future<Either<Failure, SignInUserResponse>> signIn(
@@ -19,4 +20,6 @@ abstract class AuthRepository {
   Future<bool> isUserLoggedIn();
 
   Future<void> signOut();
+
+  Future<Either<Failure, BaseResponse>> uploadProfileImage(String filePath);
 }
