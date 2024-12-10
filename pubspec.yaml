@@ -40,6 +40,7 @@ dependencies:
   dartz:
   firebase_auth:
   get_it:
+  cloud_firestore:
 
 dev_dependencies:
   flutter_test:

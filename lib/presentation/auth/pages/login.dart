@@ -12,8 +12,8 @@ import 'signup.dart';
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
 
-  final _emailCtrl = TextEditingController(text: 'testuser3@yopmail.com');
-  final _passwordCtrl = TextEditingController(text: 'Temp@123');
+  final _emailCtrl = TextEditingController();
+  final _passwordCtrl = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
